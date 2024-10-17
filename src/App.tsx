@@ -1,10 +1,11 @@
 import React from 'react';
-import './App.css';
+import FunctionChain from './components/FunctionChain';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <h1 className="text-3xl font-bold text-center p-6">Function Chain Calculator</h1>
+      <FunctionChain />
     </div>
   );
 }
