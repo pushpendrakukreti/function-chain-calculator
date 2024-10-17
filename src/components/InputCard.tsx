@@ -7,14 +7,16 @@ interface InputCardProps {
 
 const InputCard: React.FC<InputCardProps> = ({ x, onInputChange }) => {
   return (
-    <div className="bg-blue-100 p-4 rounded shadow-md mb-4">
+    <div className="flex items-center bg-white" style={{ width: "115px", height: "50px", marginTop: "200px", marginLeft: "140px", borderRadius: "15px", border: "2px solid #FFC267" }}>
       <input
         type="number"
         value={x}
         onChange={(e) => onInputChange(parseFloat(e.target.value))}
-        className="w-full border p-2 mb-2"
+        className="p-1 text-center"
+        style={{ borderRadius: "5px", width: "5rem", fontSize: "18px", fontWeight: "700" }}
       />
-      <p>Input (x): {x}</p>
+      <span style={{ width: "1px", height: "50px", backgroundColor: "#FFC267" }}></span>
+      <input type="radio" checked className="ml-2" />
     </div>
   );
 };
