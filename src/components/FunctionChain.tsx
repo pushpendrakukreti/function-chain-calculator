@@ -13,39 +13,48 @@ interface FunctionChainProps {
 }
 
 const FunctionChain: React.FC<FunctionChainProps> = ({ functions }) => {
-    const [x, setX] = useState<number>(2);  // Initialize x with a default value
-    const [finalOutput, setFinalOutput] = useState<number>(0);  // To hold the final output
+    const [x, setX] = useState<number>(2);
+    const [finalOutput, setFinalOutput] = useState<number>(0);
+    const [updatedFunctions, setUpdatedFunctions] = useState(functions);
 
-    // Function to perform calculations based on cardNum and the current x value
     const performCalculations = (initialX: number) => {
         let currentValue = initialX;
 
-        // Perform calculations based on the specified sequence: 1 -> 2 -> 4 -> 5 -> 3
-        currentValue = calculateOutput(functions[0], currentValue); // Card 1
-        currentValue = calculateOutput(functions[1], currentValue); // Card 2
-        currentValue = calculateOutput(functions[3], currentValue); // Card 4
-        currentValue = calculateOutput(functions[4], currentValue); // Card 5
-        currentValue = calculateOutput(functions[2], currentValue); // Card 3
+        currentValue = calculateOutput(updatedFunctions[0], currentValue);
+        currentValue = calculateOutput(updatedFunctions[1], currentValue);
+        currentValue = calculateOutput(updatedFunctions[3], currentValue);
+        currentValue = calculateOutput(updatedFunctions[4], currentValue);
+        currentValue = calculateOutput(updatedFunctions[2], currentValue);
 
-        setFinalOutput(currentValue);  // Set the final output after all calculations
+        setFinalOutput(currentValue);
     };
 
-    // Function to perform the calculation based on the equation of the card
     const calculateOutput = (functionData: { equation: string }, inputValue: number): number => {
         const equation = functionData.equation;
         const replacedEquation = equation.replace(/x/g, inputValue.toString());
 
         try {
-            return eval(replacedEquation);  // Unsafe, but just for demonstration
+            return eval(replacedEquation);
         } catch (error) {
             console.error("Error evaluating equation:", error);
-            return 0;  // Handle error by returning 0 or other logic
+            return 0;
         }
     };
 
     const handleInputChange = (newValue: number) => {
-        setX(newValue);  // Update x with the new input value
-        performCalculations(newValue);  // Perform calculations in sequence
+        setX(newValue);
+        performCalculations(newValue);
+    };
+
+    const handleFunctionChange = (index: number, newEquation: string) => {
+        debugger;
+        const updatedFunctionsCopy = [...updatedFunctions];
+        updatedFunctionsCopy[index].equation = newEquation;
+        setUpdatedFunctions(updatedFunctionsCopy);
+        console.log("up func(): ", updatedFunctions);
+        console.log("slice(0, 3): ", updatedFunctions.slice(0, 3));
+        console.log("slice(3): ", updatedFunctions.slice(3));
+        performCalculations(x);
     };
 
     useEffect(() => {
@@ -55,45 +64,36 @@ const FunctionChain: React.FC<FunctionChainProps> = ({ functions }) => {
     return (
         <>
             <div className="container mx-auto p-6 flex flex-col items-center" style={{ position: "absolute", maxWidth: "100vw" }}>
-                <div className="col-span-1" style={{ left: -20, position: "absolute", top: -13 }}>
+                <div className="col-span-1" style={{ left: -20, position: "absolute", top: -13, zIndex: 1 }}>
                     <InputCard x={x} onInputChange={handleInputChange} />
                 </div>
-                <div className="col-span-1" style={{ right: 120, position: "absolute", top: -13 }}>
+                <div className="col-span-1" style={{ right: 120, position: "absolute", top: -13, zIndex: 1 }}>
                     <FinalOutput output={finalOutput} />
                 </div>
             </div>
-            <div className="container mx-auto p-6 flex flex-col items-center">
+
+            <div className="container mx-auto p-6 flex flex-col items-center" style={{ position: "relative", zIndex: 0 }}>
                 <div className='grid grid-cols-3 gap-8 items-end'>
-                    <FunctionCard
-                        cardNum={functions[0].cardNum}
-                        text={functions[0].text}
-                        selectedDropdownValue={functions[1].selectedDropdownValue}
-                    />
-
-                    <FunctionCard
-                        cardNum={functions[1].cardNum}
-                        text={functions[1].text}
-                        selectedDropdownValue={functions[3].selectedDropdownValue}
-                    />
-
-                    <FunctionCard
-                        cardNum={functions[2].cardNum}
-                        text={functions[2].text}
-                        selectedDropdownValue={functions[0].selectedDropdownValue}
-                    />
+                    {updatedFunctions.slice(0, 3).map((func, index) => (
+                        <FunctionCard
+                            key={func.cardNum}
+                            cardNum={func.cardNum}
+                            text={func.equation}
+                            selectedDropdownValue={func.selectedDropdownValue}
+                            onEquationChange={(newEquation) => handleFunctionChange(index, newEquation)}
+                        />
+                    ))}
                 </div>
                 <div className='grid grid-cols-2 gap-8 mt-20'>
-                    <FunctionCard
-                        cardNum={functions[3].cardNum}
-                        text={functions[3].text}
-                        selectedDropdownValue={functions[4].selectedDropdownValue}
-                    />
-
-                    <FunctionCard
-                        cardNum={functions[4].cardNum}
-                        text={functions[4].text}
-                        selectedDropdownValue={functions[2].selectedDropdownValue}
-                    />
+                    {updatedFunctions.slice(3).map((func, index) => (
+                        <FunctionCard
+                            key={func.cardNum}
+                            cardNum={func.cardNum}
+                            text={func.equation}
+                            selectedDropdownValue={func.selectedDropdownValue}
+                            onEquationChange={(newEquation) => handleFunctionChange(index + 3, newEquation)}
+                        />
+                    ))}
                 </div>
             </div>
         </>

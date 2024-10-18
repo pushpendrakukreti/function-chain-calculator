@@ -1,27 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 interface FunctionCardProps {
   cardNum: string;
   text: string;
   selectedDropdownValue: string;
+  onEquationChange: (newEquation: string) => void;
 }
 
 const FunctionCard: React.FC<FunctionCardProps> = ({
   cardNum,
   text,
   selectedDropdownValue,
+  onEquationChange,
 }) => {
-  // const [output, setOutput] = useState<number>(input);
+  const [equation, setEquation] = useState(text);
 
-  // useEffect(() => {
-  //   try {
-  //     const result = eval(equation.replace('x', input.toString()));
-  //     setOutput(result);
-  //     onOutputChange(result);
-  //   } catch (error) {
-  //     console.error('Error calculating function:', error);
-  //   }
-  // }, [equation, input, onOutputChange]);
+  const validateEquation = (input: string) => {
+    const cleanedInput = input.replace(/\s+/g, '');
+    const validRegex = /^[0-9x\+\-\*/\^()]*$/;
+    return validRegex.test(cleanedInput);
+  };
+
+  const handleEquationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEquation = e.target.value;
+    const startsAndEndsWithValidChars = /^[a-z0-9].*[a-z0-9]$/i;
+
+    if (startsAndEndsWithValidChars.test(newEquation) && validateEquation(newEquation)) {
+      setEquation(newEquation);
+      onEquationChange(newEquation);
+    } else {
+      setEquation(newEquation);
+    }
+  };
 
   return (
     <div className="max-w-sm bg-white rounded-lg shadow shadow-gray-400 pt-4 pl-4">
@@ -65,8 +75,8 @@ const FunctionCard: React.FC<FunctionCardProps> = ({
         <label className="block font-semibold text-gray-600 mb-2">Equation</label>
         <input
           type="text"
-          value={text}
-          disabled
+          value={equation}
+          onChange={handleEquationChange}
           className="w-full px-4 py-2 border rounded-md bg-white text-gray-600"
         />
       </div>
