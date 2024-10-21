@@ -95,15 +95,27 @@ The app will be available at http://localhost:3000.
 ## Project Structure
 
 ```bash
- src/
+src/
+├── assets/
+│   └── bgImage.png
 ├── components/
-│   ├── FunctionCard.tsx     # Displays each function in the chain
-│   ├── FunctionChain.tsx    # Manages the flow of functions
-│   ├── InputCard.tsx        # Captures user input for x
-│   └── FinalOutput.tsx      # Displays the final calculated result
-├── App.tsx                  # Main app component that renders the FunctionChain
-├── index.css                # TailwindCSS styles
-└── index.tsx                # Entry point of the application
+│   ├── cards/
+│   │   ├── FunctionCard/
+│   │   │   └── FunctionCard.tsx     # Displays each function in the chain
+│   │   ├── InputCard/
+│   │   │   ├── InputCard.tsx        # Captures user input for x
+│   │   │   └── InputCard.test.tsx   # Tests for InputCard component
+│   │   └── OutputCard/
+│   │       ├── FinalOutput.tsx      # Displays the final calculated result
+│   │       └── FinalOutput.test.tsx  # Tests for FinalOutput component
+│   └── chain/
+│       ├── FunctionChain.tsx        # Manages the flow of functions
+│       └── FunctionChain.test.tsx    # Tests for FunctionChain component
+├── utils/
+│   └── func.js                      # Utility functions
+├── App.tsx                          # Main app component that renders the FunctionChain
+├── index.css                        # TailwindCSS styles
+└── index.tsx                        # Entry point of the application
 ```
 
 ## Components
