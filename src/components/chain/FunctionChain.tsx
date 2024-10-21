@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import InputCard from './InputCard';
-import FunctionCard from './FunctionCard';
-import FinalOutput from './FinalOutput';
+import InputCard from '../cards/InputCard/InputCard';
+import FunctionCard from '../cards/FunctionCard/FunctionCard';
+import FinalOutput from '../cards/OutputCard/FinalOutput';
 
 interface FunctionChainProps {
     functions: {

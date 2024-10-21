@@ -48,6 +48,7 @@ const InputCard: React.FC<InputCardProps> = ({ x, onInputChange, onRadioCoordsCh
       />
       <div style={{ width: '1px', height: '50px', backgroundColor: '#FFC267' }} />
       <input
+      role='radio'
         type="radio"
         checked
         ref={radioRef}

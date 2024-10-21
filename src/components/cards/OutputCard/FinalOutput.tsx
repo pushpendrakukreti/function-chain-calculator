@@ -41,6 +41,7 @@ const FinalOutput: React.FC<FinalOutputProps> = ({ output, onRadioCoordsChange }
       />
       <input
         type="number"
+        data-testid="final-output"
         value={output}
         className="p-1 text-center"
         disabled
